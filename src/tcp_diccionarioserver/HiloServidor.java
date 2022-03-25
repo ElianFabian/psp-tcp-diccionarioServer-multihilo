@@ -116,7 +116,8 @@ class HiloServidor extends Thread
                 // <editor-fold desc="Consultar palabra: ?palabra" defaultstate="collapsed">
                 if ((m = patConsulta.matcher(lineaRecibida)).matches())
                 {
-                    String palabra = m.group(1);
+                    final var palabra = m.group(1);
+                    
                     if (diccionario.containsKey(palabra))
                     {
                         //               dic> palabra:significado
@@ -129,8 +130,8 @@ class HiloServidor extends Thread
                 // <editor-fold desc="Asignar significado: !palabra=significado" defaultstate="collapsed">
                 else if ((m = patAsignacion.matcher(lineaRecibida)).matches())
                 {
-                    String palabra = m.group(1);
-                    String significado = m.group(2);
+                    var palabra = m.group(1);
+                    var significado = m.group(2);
 
                     diccionario.put(palabra, significado);
                     bwACliente.write(STR_PROMPT + "OK, " + palabra + "=" + significado);
@@ -140,9 +141,9 @@ class HiloServidor extends Thread
                 //<editor-fold desc="Palabras que empiezan con: ?>comienzo" defaultstate="collapsed">     
                 else if ((m = patPalabrasComiezanCon.matcher(lineaRecibida)).matches())
                 {
-                    String comienzo = m.group(1);
+                    final var comienzo = m.group(1);
 
-                    final StringBuilder palabrasCoincidentes = new StringBuilder("");
+                    final var palabrasCoincidentes = new StringBuilder();
 
                     diccionario.forEach((p, s) ->
                     {
@@ -155,9 +156,9 @@ class HiloServidor extends Thread
                 //<editor-fold desc="Palabras que terminan con: ?<final" defaultstate="collapsed">
                 else if ((m = patPalabrasTerminanCon.matcher(lineaRecibida)).matches())
                 {
-                    String fin = m.group(1);
-
-                    final StringBuilder palabrasCoincidentes = new StringBuilder("");
+                    final var fin = m.group(1);
+                    
+                    final var palabrasCoincidentes = new StringBuilder();
 
                     diccionario.forEach((p, s) ->
                     {
@@ -178,17 +179,17 @@ class HiloServidor extends Thread
                 //<editor-fold desc="Asignar significado: palabra=significado" defaultstate="collapsed">
                 if ((m = patAisignacionConDefs.matcher(lineaRecibida)).matches())
                 {
-                    String palabra = m.group(1);
-                    String significado = m.group(2);
+                    final var palabra = m.group(1);
+                    final var significado = m.group(2);
+                    
+                    diccionario.put(palabra, significado);
 
                     if (diccionario.containsKey(palabra))
                     {
-                        diccionario.put(palabra, significado);
                         bwACliente.write(STR_REPL + palabra + ":" + diccionario.get(palabra));
                     }
                     else
                     {
-                        diccionario.put(palabra, significado);
                         bwACliente.write(STR_NEWENT + palabra + ":" + significado);
                     }
                 }
