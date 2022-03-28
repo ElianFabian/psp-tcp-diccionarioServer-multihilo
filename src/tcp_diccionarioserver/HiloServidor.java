@@ -175,7 +175,7 @@ class HiloServidor extends Thread
                 else error = true;
 
                 break;
-                
+
             case DEFS:
                 //<editor-fold desc="Asignar significado: palabra=significado" defaultstate="collapsed">
                 if ((m = patAisignacionConDefs.matcher(lineaRecibida)).matches())
